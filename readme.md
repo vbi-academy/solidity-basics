@@ -29,5 +29,6 @@ Nếu bạn đã có kiến thức về Blockchain cơ bản, hãy bỏ qua ph�
 
 Trong repository này, chúng ta sẽ có phần Discussions (Thảo luận) trong phần này, bạn có thể đặt bất kỳ câu hỏi nào liên quan đến khoá học tại đây, tụi mình sẽ cố gắng để giải đáp bất kỳ câu hỏi nào của bạn nhé.
 
-Ngoài ra, tụi mình cũng có group hỗ trợ học viên của VBI Academy:
+Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI Academy:
 
+<a href="https://discord.gg/htjprg2Puy" style="text-decoration: underline;">Solidity Developer Vietnam</a>
