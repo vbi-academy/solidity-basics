@@ -15,6 +15,7 @@ Chào mừng bạn đến với repository của khoá học Solidity Basics. Kh
 ---
 > Nội dung trong khoá học này đã được sự cho phép chọn lọc và dịch thuật từ các khoá học được phát triển và giảng dạy bởi [Cyfrin Updraft](https://updraft.cyfrin.io/) và [Patrick Collins](https://www.youtube.com/@PatrickAlphaC).
 ---
+
 ## Mở đầu
 
 Trong khoá học này, chúng ta sẽ đi qua những thứ cơ bản nhất của việc phát triển smart contract với ngôn ngữ Solidity. 
@@ -105,3 +106,77 @@ Có 6 loại nhưng memory, storage & calldata là 3 loại mà chúng ta tiếp
 > #### "Không có bước đi nào là quá nhỏ. Mỗi bước đều là một phần của hành trình lớn."
 > 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
 ---
+
+## Section 2: Contract Factory
+
+Code: https://github.com/openedu101/solidity-basics/tree/02-storage-factory
+
+- [Factory Patterns](https://betterprogramming.pub/learn-solidity-the-factory-pattern-75d11c3e7d29)
+
+Phần này đơn giản là tạo một hợp đồng trong một hợp đồng khác.
+
+Factory (nhà máy) contract dùng để tạo và quản lý các hợp đồng khác.
+
+### Import code
+
+Code: https://github.com/openedu101/solidity-basics/tree/02-solidity-import
+
+### Tương tác với contract khác
+Để tương tác với contract khác bạn luôn cần ABI + Address
+- [ABI](https://docs.soliditylang.org/en/latest/abi-spec.html)
+  
+### Inheritance & Overrides (kế thừa và ghi đè)
+
+Hợp đồng có thể kế thừa từ nhiều hợp đồng cha.
+
+Khi một hàm được gọi và tồn tại nhiều lần trong các hợp đồng cha khác nhau, các hợp đồng cha sẽ được tìm kiếm từ phải sang trái và bên phải ngoài cùng sẽ được kế thừa theo thứ tự tìm kiếm sâu nhất (depth-first). 
+
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract A {
+    function foo() public pure virtual returns (string memory) {
+        return "A";
+    }
+}
+
+// Hợp đồng kế thừa các hợp đồng khác bằng cách sử dụng từ khóa 'is'.
+contract B is A {
+    // Ghi đè A.foo()
+    function foo() public pure virtual override returns (string memory) {
+        return "B";
+    }
+}
+
+contract C is A {
+    // Ghi đè A.foo()
+    function foo() public pure virtual override returns (string memory) {
+        return "C";
+    }
+}
+
+contract D is B, C {
+    // D.foo() sẽ trả về hàm foo của hợp đồng "C"
+    function foo() public pure override(B, C) returns (string memory) {
+        return super.foo();
+    }
+}
+
+contract E is C, B {
+    // E.foo() sẽ trả về hàm foo của hợp đồng "B"
+    function foo() public pure override(C, B) returns (string memory) {
+        return super.foo();
+    }
+}
+
+// Thay đổi vị trí của A và B sẽ gây ra lỗi compilation
+contract F is A, B {
+    function foo() public pure override(A, B) returns (string memory) {
+        return super.foo();
+    }
+}
+```
+
+Thứ tự kế thừa phải được sắp xếp từ "cơ bản nhất" (most base-like) đến "phức tạp nhất" (most derived), nếu không sẽ gây ra lỗi biên dịch.
