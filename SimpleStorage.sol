@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.22;
+pragma solidity 0.8.26;
 
 contract SimpleStorage {
     // Biến number sẽ có giá trị mặc định là 0
