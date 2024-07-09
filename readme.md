@@ -8,7 +8,7 @@
 <a href="https://www.youtube.com/@VBIAcademy">
         <img src=".github/images/vbi-powered-badge.png" width="145" alt=""/></a>
 </p>
-Chào mừng bạn đến với repository của khoá học Solidity Basics. Khoá học này được phát triển bởi <a href="https://www.youtube.com/@VBIAcademy">VBI Academy</a> và <a href="https://www.youtube.com/channel/UC0QESw8LTPb841qcABmOsvA">Terran Crypt</a>.
+Chào mừng bạn đến với repository của khoá học Solidity Basics. <br/> Khoá học này được phát triển bởi <a href="https://www.youtube.com/@VBIAcademy">VBI Academy</a> và <a href="https://www.youtube.com/channel/UC0QESw8LTPb841qcABmOsvA">Terran Crypt</a>.
 
 </div>
 
@@ -28,7 +28,7 @@ Nếu bạn đã có kiến thức về Blockchain cơ bản, hãy bỏ qua ph�
 
 <a href="https://www.youtube.com/playlist?list=PLxBQKTwGKNkN_YSwg84ARGRIXbNiVLI6y" style="text-decoration: underline;">Blockchain Basics Course</a>
 
-Trong repository này, chúng ta sẽ có phần Discussions (Thảo luận) trong phần này, bạn có thể đặt bất kỳ câu hỏi nào liên quan đến khoá học tại đây, tụi mình sẽ cố gắng để giải đáp bất kỳ câu hỏi nào của bạn nhé.
+Trong repository này, chúng ta sẽ có phần [Discussions (Thảo luận)](https://github.com/openedu101/solidity-basics/discussions) trong phần này, bạn có thể đặt bất kỳ câu hỏi nào liên quan đến khoá học tại đây, tụi mình sẽ cố gắng để giải đáp bất kỳ câu hỏi nào của bạn nhé.
 
 Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI Academy:
 
@@ -134,7 +134,7 @@ Khi một hàm được gọi và tồn tại nhiều lần trong các hợp đ�
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.26;
 
 contract A {
     function foo() public pure virtual returns (string memory) {
@@ -180,3 +180,329 @@ contract F is A, B {
 ```
 
 Thứ tự kế thừa phải được sắp xếp từ "cơ bản nhất" (most base-like) đến "phức tạp nhất" (most derived), nếu không sẽ gây ra lỗi biên dịch.
+
+## Section 3: Decentralized Crowdfunding Contract
+
+Code: https://github.com/openedu101/solidity-basics/tree/03-decentralized-crowdfunding
+
+Phần này chúng ta sẽ xây dựng một smart contract để gây quỹ từ cộng đồng theo cách phi tập trung.
+
+### Gửi ETH thông qua một function
+- [Ethereum Unit Converter](https://etherscan.io/unitconverter)
+
+- Các trường trong một transaction trên Ethereum: 
+  - `from`
+  - `to`
+  - `gasLimit`
+  - `maxFeePerGas`
+  - `maxPriorityFeePerGas`
+  - `nonce`
+  - `value`
+
+Chi tiết: https://ethereum.org/en/developers/docs/transactions/
+  
+- [v, r, s trong eth_getTransactionByHash nghĩa là gì?](https://ethereum.stackexchange.com/questions/15766/what-does-v-r-s-in-eth-gettransactionbyhash-mean)
+- Payable: `function` và `address` được khai báo `payable` có thể nhận ether vào hợp đồng.
+- Solidty Global Keywords: https://docs.soliditylang.org/en/latest/cheatsheet.html#global-variables
+  
+### Require & Revert
+- **Require**
+    
+`require()` trong Solidity là một cách để đặt điều kiện trước khi thực hiện một hành động. Nó hoạt động tương tự như việc yêu cầu đăng nhập trước khi truy cập tài khoản trên các trang web. 
+
+Ví dụ: Khi Suyash muốn gửi 5 Ethereum cho Aditya, chúng ta có thể sử dụng `require()` để kiểm tra xem Suyash có đủ số dư không trước khi thực hiện giao dịch.
+
+Về mặt kỹ thuật, `require()` trả về giá trị boolean (đúng hoặc sai). Nếu điều kiện đúng, code sẽ tiếp tục thực thi. Nếu sai, nó sẽ dừng lại và báo lỗi. `require()` nhận hai tham số: điều kiện cần kiểm tra và thông báo lỗi (tùy chọn).
+
+Cú pháp:
+```js
+require(condition);
+```
+
+Cú pháp với thông báo lỗi:
+```js
+require(condition, "Thông báo lỗi");
+```
+
+Nếu điều kiện trong `require()` đúng, code sẽ tiếp tục thực thi.
+
+Nếu điều kiện sai, giao dịch sẽ bị hủy bỏ, các thay đổi trạng thái sẽ được hoàn tác, và gas còn lại sẽ được hoàn trả.
+
+Thông báo lỗi là tùy chọn, nhưng rất hữu ích để giải thích lý do tại sao giao dịch thất bại.
+
+- **Revert**
+
+`revert()` được sử dụng để xử lý lỗi và hủy bỏ giao dịch trong smart contract. Khi được gọi, `revert()` sẽ hủy bỏ tất cả các thay đổi trạng thái trong giao dịch hiện tại.
+
+`revert()` thường được sử dụng trong các tình huống tương tự như `require()`, nhưng khi cần xử lý logic phức tạp hơn.
+
+Nó hữu ích trong các trường hợp có nhiều điều kiện lồng nhau (if/else) phức tạp.
+
+Cú pháp:
+```js
+revert('Something bad happened');
+```
+
+Hoặc có thể sử dụng trong câu lệnh điều kiện:
+```js
+if (condition) {
+    revert('Error message');
+}
+```
+
+- So sánh `revert()` và `required()`:
+  - `require()` thường được ưa chuộng hơn cho các kiểm tra đơn giản.
+  - `revert()` linh hoạt hơn cho các logic phức tạp.
+
+Mặc dù `revert()` cho phép xử lý logic phức tạp, nhưng việc có quá nhiều logic phức tạp trong smart contract được coi là một dấu hiệu của code không tối ưu (code smell).
+
+### Lấy dữ liệu giá thực tế bằng Chainlink Oracle
+
+- Chainlink Documentation: https://docs.chain.link/
+- Chainlink Github: https://github.com/smartcontractkit/chainlink
+
+- **Solidity Math**:
+  - Nhân trước khi chia
+  - Không có dấu phẩy động trong Solidity.
+
+### Library
+
+`library` tương tự như `contract`, nhưng bạn không thể khai báo bất kỳ biến trạng thái nào và không thể gửi ether.
+
+`library` có thể `import` vào `contract` nếu tất cả các chức năng thư viện đều là nội bộ. Nếu không, `library` phải được deploy và liên kết trước khi `contract` được `deploy`.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+library Math {
+    function sqrt(uint256 y) internal pure returns (uint256 z) {
+        if (y > 3) {
+            z = y;
+            uint256 x = y / 2 + 1;
+            while (x < z) {
+                z = x;
+                x = (y / x + x) / 2;
+            }
+        } else if (y != 0) {
+            z = 1;
+        }
+        // else z = 0 (default value)
+    }
+}
+
+contract TestMath {
+    function testSquareRoot(uint256 x) public pure returns (uint256) {
+        return Math.sqrt(x);
+    }
+}
+
+```
+
+### Overflow & Underflow
+
+Trong Solidity, overflow và underflow là hai vấn đề liên quan đến việc xử lý số nguyên. 
+
+- **Overflow**:
+  - Xảy ra khi một số vượt quá giá trị tối đa có thể lưu trữ.
+  - Ví dụ: `uint8` chỉ lưu từ 0-255. Nếu cộng 1 vào 255, kết quả sẽ quay về 0.
+- **Underflow**: 
+  - Xảy ra khi một số giảm xuống dưới giá trị tối thiểu có thể lưu trữ.
+  - Ví dụ: `uint8` giảm 1 từ 0 sẽ quay về 255.
+
+Các phiên bản Solidity từ 0.8.0 trở lên tự động kiểm tra và revert giao dịch khi xảy ra overflow/underflow. Với phiên bản cũ hơn, cần sử dụng thư viện SafeMath hoặc kiểm tra thủ công.
+
+- [checked vs unchecked](https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic)
+
+### Vòng lặp
+
+Solidity hỗ trợ các vòng lặp `for`, `while`, và `do while`.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+contract Loop {
+    function loop() public {
+        // for loop
+        for (uint256 i = 0; i < 10; i++) {
+            if (i == 3) {
+                Chuyển sang lần lặp tiếp theo
+                continue;
+            }
+            if (i == 5) {
+                // Thoát khỏi vòng lặp
+                break;
+            }
+        }
+
+        // while loop
+        uint256 j;
+        while (j < 10) {
+            j++;
+        }
+    }
+}
+```
+
+### Reset array 
+
+```js
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.4.0 <0.9.0;
+
+contract DeleteExample {
+    uint[] dataArray;
+
+    function f() public {
+        delete dataArray;
+
+        // hoặc dùng
+        dataArray = new uint[](0);
+    }
+}
+```
+
+### Transfer, Send, and Call
+
+Bạn có thể gửi Ether đến các hợp đồng khác bằng 3 functions:
+
+- `transfer` (2300 gas, không ném về lỗi)
+- `send` (2300 gas, trả về `bool`)
+- `call` (có thể set gas hoặc không, trả về `bool`)
+
+```js
+contract SendEther {
+    function sendViaTransfer(address payable _to) public payable {
+        // Không nên dùng function này
+        _to.transfer(msg.value);
+    }
+
+    function sendViaSend(address payable _to) public payable {
+        // Function này cũng không nên dùng
+        bool sent = _to.send(msg.value);
+        require(sent, "Failed to send Ether");
+    }
+
+    function sendViaCall(address payable _to) public payable {
+        // Function này nên được dùng
+        (bool sent, bytes memory data) = _to.call{value: msg.value}("");
+        require(sent, "Failed to send Ether");
+    }
+}
+```
+
+### Constructor
+
+Hàm `constructor()` là một hàm tuỳ chọn, được khởi tạo khi tạo `contract`
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+// Base contract X
+contract X {
+    string public name;
+
+    constructor(string memory _name) {
+        name = _name;
+    }
+}
+
+// Base contract Y
+contract Y {
+    string public text;
+
+    constructor(string memory _text) {
+        text = _text;
+    }
+}
+
+// Base contract C
+contract C is X, Y {
+    
+    constructor(string memory _name, string memory _text) X(_name) Y(_text) {}
+}
+```
+
+### Modifiers
+
+- Solidity Operators with Example: https://www.geeksforgeeks.org/solidity-operators/
+- `modifier` là function có thể được gọi trước hoặc sau `function` được gọi.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+contract FunctionModifier {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    function changeOwner(address _newOwner)
+        public
+        onlyOwner
+    {
+        owner = _newOwner;
+    }
+}
+```
+
+### Immutable & Constant
+
+- `immutable` nên đùng để ghi dữ liệu vào trong lần khởi tạo contract.
+- `constant` nên dùng để ghi dữ liệu trực tiếp vào trong code.
+
+Dùng `immutable` và `constant` để tối ưu gas cho contract.
+
+### Custom Errors
+
+- [Custom Errors in Solidity](https://soliditylang.org/blog/2021/04/21/custom-errors/)
+
+### Testnet Demo
+
+### Receive & Fallback
+
+`contract` nếu muốn nhận Ether phải có ít nhất một trong các `function` dưới đây:
+
+- `receive()` external payable
+- `fallback()` external payable
+  
+`receive()` sẽ được gọi nếu `msg.data` bị bỏ trống, còn không `fallback()` sẽ được gọi.
+
+```js
+contract ReceiveEther {
+    /*
+    Function nào sẽ được gọi, fallback() or receive()?
+
+           gửi Ether
+               |
+         msg.data có trống không?
+              /      \
+            có      không
+            /          \
+receive() có tồn tại?  fallback()
+         /   \
+        có   không
+        /      \
+    receive()   fallback()
+    */
+
+    receive() external payable {}
+    
+    fallback() external payable {}
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+}
+```
+
+- `this` là để chỉ contract này.
