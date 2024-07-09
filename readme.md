@@ -444,7 +444,7 @@ Hàm `constructor()` là một hàm tuỳ chọn, được khởi tạo khi tạ
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.26;
 
 // Base contract X
 contract X {
