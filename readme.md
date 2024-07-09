@@ -34,6 +34,52 @@ Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI 
 
 <a href="https://discord.gg/htjprg2Puy" style="text-decoration: underline;">Solidity Developer Vietnam</a>
 
+## Table of Contents
+
+<details> 
+    <summary><a href="#section-1-remix-simple-storage">Section 1: Remix Simple Storage</a></summary>
+    <ol>
+        <li><a href="#bố-cục-solidty-source-file">Bố cục Solidity Source File</a></li>
+        <li><a href="#những-kiểu-dữ-liệu-type-cơ-bản-của-solidity">Những kiểu dữ liệu (type) cơ bản của Solidity</a></li>
+        <li><a href="#solidity-functions-hàm-trong-solidity">Solidity Functions (hàm trong Solidity)</a></li>
+        <li><a href="#array--struct">Array & Struct</a></li>
+        <li><a href="#memory-storage--calldata">Memory, Storage & Calldata</a></li>
+        <li><a href="#mappings">Mappings</a></li>
+        <li><a href="#deploy-contract">Deploy contract</a></li>
+    </ol>
+</details>
+
+<details>
+    <summary><a href="#section-2-contract-factory">Section 2: Contract Factory</a></summary>
+    <ol>
+        <li><a href="#import-code">Import code</a></li>
+        <li><a href="#tương-tác-với-contract-khác">Tương tác với contract khác</a></li>
+        <li><a href="#inheritance--overrides-kế-thừa-và-ghi-đè">Inheritance & Overrides (kế thừa và ghi đè)</a></li>
+    </ol>
+</details>
+
+<details>
+    <summary><a href="#section-3-decentralized-crowdfunding-contract">Section 3: Decentralized Crowdfunding Contract</a></summary>
+    <ol>
+        <li><a href="#gửi-eth-thông-qua-một-function">Gửi ETH thông qua một function</a></li>
+        <li><a href="#require--revert">Require & Revert</a></li>
+        <li><a href="#lấy-dữ-liệu-giá-thực-tế-bằng-chainlink-oracle">Lấy dữ liệu giá thực tế bằng Chainlink Oracle</a></li>
+        <li><a href="#library">Library</a></li>
+        <li><a href="#overflow--underflow">Overflow & Underflow</a></li>
+        <li><a href="#vòng-lặp">Vòng lặp</a></li>
+        <li><a href="#reset-array">Reset array</a></li>
+        <li><a href="#transfer-send-and-call">Transfer, Send, and Call</a></li>
+        <li><a href="#constructor">Constructor</a></li>
+        <li><a href="#modifiers">Modifiers</a></li>
+        <li><a href="#immutable--constant">Immutable & Constant</a></li>
+        <li><a href="#custom-errors">Custom Errors</a></li>
+        <li><a href="#testnet-demo">Testnet Demo</a></li>
+        <li><a href="#receive--fallback">Receive & Fallback</a></li>
+    </ol>
+</details>
+
+
+
 ## Section 1: Remix Simple Storage
 
 Code: https://github.com/openedu101/solidity-basics/tree/01-remix-simple-storage
