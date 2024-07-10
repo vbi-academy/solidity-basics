@@ -149,7 +149,7 @@ Có 6 loại nhưng memory, storage & calldata là 3 loại mà chúng ta tiếp
 - Kết nối với Metamask
 - Tương tác với contract đã được deploy
 ---
-> #### "Không có bước đi nào là quá nhỏ. Mỗi bước đều là một phần của hành trình lớn."
+> #### "Không có bước đi nào là quá nhỏ. Mỗi bước đều là một phần của hành trình lớn." - Jenny Craig
 > 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
 ---
 
@@ -226,6 +226,11 @@ contract F is A, B {
 ```
 
 Thứ tự kế thừa phải được sắp xếp từ "cơ bản nhất" (most base-like) đến "phức tạp nhất" (most derived), nếu không sẽ gây ra lỗi biên dịch.
+
+---
+> #### "Thành công không đến từ những gì bạn làm thỉnh thoảng, mà đến từ những gì bạn làm mỗi ngày." - Robin Sharma
+> 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
+---
 
 ## Section 3: Decentralized Crowdfunding Contract
 
@@ -552,3 +557,8 @@ receive() có tồn tại?  fallback()
 ```
 
 - `this` là để chỉ contract này.
+  
+---
+> #### "Chặng đường dài hàng nghìn dặm bắt đầu từ một bước chân nhỏ." - Lão Tử
+> 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
+---
