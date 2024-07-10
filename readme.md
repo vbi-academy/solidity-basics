@@ -34,7 +34,7 @@ Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI 
 
 <a href="https://discord.gg/htjprg2Puy" style="text-decoration: underline;">Solidity Developer Vietnam</a>
 
-## Table of Contents
+## Mục lục
 
 <details> 
     <summary><a href="#section-1-remix-simple-storage">Section 1: Remix Simple Storage</a></summary>
