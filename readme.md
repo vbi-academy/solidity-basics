@@ -79,7 +79,6 @@ Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI 
 </details>
 
 
-
 ## Section 1: Remix Simple Storage
 
 Code: https://github.com/openedu101/solidity-basics/tree/01-remix-simple-storage
@@ -150,7 +149,10 @@ Có 6 loại nhưng memory, storage & calldata là 3 loại mà chúng ta tiếp
 - Tương tác với contract đã được deploy
 ---
 > #### "Không có bước đi nào là quá nhỏ. Mỗi bước đều là một phần của hành trình lớn." - Jenny Craig
-> 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
+
+🎉 Đăng thành quả trong phần này của bạn tại: 
+- [VBI Academy - Facebook](https://www.facebook.com/groups/vbivietnamdevtech)
+- [Solidity Developer Vietnam - Discord](https://discord.gg/BzQ9kanp)
 ---
 
 ## Section 2: Contract Factory
@@ -229,7 +231,11 @@ Thứ tự kế thừa phải được sắp xếp từ "cơ bản nhất" (most
 
 ---
 > #### "Thành công không đến từ những gì bạn làm thỉnh thoảng, mà đến từ những gì bạn làm mỗi ngày." - Robin Sharma
-> 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
+
+🎉 Đăng thành quả trong phần này của bạn tại: 
+- [VBI Academy - Facebook](https://www.facebook.com/groups/vbivietnamdevtech)
+- [Solidity Developer Vietnam - Discord](https://discord.gg/BzQ9kanp)
+
 ---
 
 ## Section 3: Decentralized Crowdfunding Contract
@@ -560,5 +566,8 @@ receive() có tồn tại?  fallback()
   
 ---
 > #### "Chặng đường dài hàng nghìn dặm bắt đầu từ một bước chân nhỏ." - Lão Tử
-> 🎉 Đăng thành quả trong phần này của bạn tại group [VBI Academy](https://www.facebook.com/groups/vbivietnamdevtech)
+
+🎉 Đăng thành quả trong phần này của bạn tại: 
+- [VBI Academy - Facebook](https://www.facebook.com/groups/vbivietnamdevtech)
+- [Solidity Developer Vietnam - Discord](https://discord.gg/BzQ9kanp)
 ---
