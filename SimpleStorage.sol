@@ -2,31 +2,37 @@
 pragma solidity 0.8.26;
 
 contract SimpleStorage {
-    // Biến number sẽ có giá trị mặc định là 0
-    uint256 number;
+    uint256 public number; // storage variable
+
+    uint256[] public arrayOfNumber;
+    uint256[5] public fixedArrayOfNumber;
 
     struct Person {
-        uint256 id;
         string name;
+        uint256 number;
     }
 
-    // Dynamic array
-    Person[] public peoples;
+    Person[] public dynamicArrayOfPerson;
 
-    // Mapping
-    mapping(string => uint256) public nameToId;
+    mapping(string name => uint256 number) public nameToNumber;
 
-    function store(uint256 _number) public {
-        number = _number;
+    function setNumber(uint256 newNumber) public {
+        number = newNumber;
     }
 
-    function addPerson(uint256 _id, string memory _name) public {
-        peoples.push(Person(_id, _name));
-        nameToId[_name] = _id;
+    function pushToArrayOfNumber(uint256 newNumber) public {
+        arrayOfNumber.push(newNumber);
     }
 
-    // Getter functions
-    function getNumber() public view returns (uint256) {
-        return number;
+    function pushToFixedArrayOfNumber(uint256 index, uint256 newNumber) public {
+        fixedArrayOfNumber[index] = newNumber;
+    }
+
+    function pushToDynamicArrayOfPerson(string memory name, uint256 _number) public {
+        dynamicArrayOfPerson.push(Person({name: name, number: _number}));
+    }
+
+    function addNumberForName(string memory name, uint256 _number) public {
+        nameToNumber[name] = _number;
     }
 }
