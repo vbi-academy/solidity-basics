@@ -137,6 +137,10 @@ Bởi vì Solidity liên tục cập nhật với các tính năng mới, cải 
 
 Có 6 loại nhưng memory, storage & calldata là 3 loại mà chúng ta tiếp xúc nhiều nhất khi chúng ta làm việc với smart contract.
 
+Tìm hiểu thêm:
+- [The Ethereum Virtual Machine - Mastering Ethereum Book](https://cypherpunks-core.github.io/ethereumbook/13evm.html)
+- [ETHEREUM VIRTUAL MACHINE (EVM) - Ethereum Docs](https://ethereum.org/en/developers/docs/evm/)
+
 ### Mappings 
 
 `mapping` là một loại cấu trúc dữ liệu được sử dụng để lưu trữ cặp key-value, cho phép bạn ánh xạ một giá trị (value) tới một key (khóa) duy nhất và không thứ tự.
@@ -145,6 +149,7 @@ Có 6 loại nhưng memory, storage & calldata là 3 loại mà chúng ta tiếp
 
 - Mainnet & Testnet
 - Faucet
+  - [Chainlink Faucet](https://faucets.chain.link/)
 - Kết nối với Metamask
 - Tương tác với contract đã được deploy
 ---
