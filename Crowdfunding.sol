@@ -6,7 +6,7 @@ import {PriceConverter} from "./PriceConverter.sol";
 
 error NotOwner();
 
-contract Crowfunding {
+contract Crowdfunding {
     using PriceConverter for uint256;
 
     mapping(address => uint256) public addressToAmountFunded;
