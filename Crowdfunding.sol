@@ -16,7 +16,7 @@ contract Crowdfunding {
     address[] public funders;
 
     event Funded(address indexed funder, uint256 value);
-    event Withdrawn(address indexed owner, uint256 value);
+    event Withdrawn(uint256 value);
 
     receive() external payable {
         fund();
@@ -55,7 +55,7 @@ contract Crowdfunding {
         (bool sent,) = payable(i_owner).call{value: address(this).balance}("");
         require(sent, "Failed to send Ether");
 
-        emit Withdrawn(i_owner, address(this).balance);
+        emit Withdrawn(address(this).balance);
     }
 
     // Tìm ra có bao nhiêu người đã đóng góp
