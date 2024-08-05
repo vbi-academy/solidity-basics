@@ -8,7 +8,7 @@
 <a href="https://www.youtube.com/@VBIAcademy">
         <img src=".github/images/vbi-powered-badge.png" width="145" alt=""/></a>
 </p>
-Chào mừng bạn đến với repository của khoá học Solidity Basics. <br/> Khoá học này được phát triển bởi <a href="https://www.youtube.com/@VBIAcademy">VBI Academy</a> và <a href="https://www.youtube.com/channel/UC0QESw8LTPb841qcABmOsvA">Terran Crypt</a>.
+Chào mừng bạn đến với repository của khoá học Solidity Basics. <br/> Khoá học này được phát triển bởi <a href="https://www.youtube.com/@VBIAcademy">VBI Academy</a> và <a href="https://www.terrancrypt.com/">Terran Crypt</a>.
 
 </div>
 
