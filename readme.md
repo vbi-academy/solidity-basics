@@ -42,7 +42,8 @@ Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI 
         <li><a href="#bố-cục-solidty-source-file">Bố cục Solidity Source File</a></li>
         <li><a href="#những-kiểu-dữ-liệu-type-cơ-bản-của-solidity">Những kiểu dữ liệu (type) cơ bản của Solidity</a></li>
         <li><a href="#solidity-functions-hàm-trong-solidity">Solidity Functions (hàm trong Solidity)</a></li>
-        <li><a href="#array--struct">Array & Struct</a></li>
+        <li><a href="#array">Array</a></li>
+        <li><a href="#struct">Struct</a></li>
         <li><a href="#memory-storage--calldata">Memory, Storage & Calldata</a></li>
         <li><a href="#mappings">Mappings</a></li>
         <li><a href="#deploy-contract">Deploy contract</a></li>
@@ -61,23 +62,31 @@ Ngoài ra, tụi mình cũng có group Discord hỗ trợ học viên của VBI 
 <details>
     <summary><a href="#section-3-decentralized-crowdfunding-contract">Section 3: Decentralized Crowdfunding Contract</a></summary>
     <ol>
-        <li><a href="#gửi-eth-thông-qua-một-function">Gửi ETH thông qua một function</a></li>
+        <li><a href="#payable">Payable</a></li>
+        <li><a href="#ether--wei">Ether & Wei</a></li>
+        <li><a href="#validations-xác-thực">Validations (Xác thực)</a></li>
         <li><a href="#require--revert">Require & Revert</a></li>
-        <li><a href="#lấy-dữ-liệu-giá-thực-tế-bằng-chainlink-oracle">Lấy dữ liệu giá thực tế bằng Chainlink Oracle</a></li>
-        <li><a href="#library">Library</a></li>
-        <li><a href="#overflow--underflow">Overflow & Underflow</a></li>
-        <li><a href="#vòng-lặp">Vòng lặp</a></li>
-        <li><a href="#reset-array">Reset array</a></li>
-        <li><a href="#transfer-send-and-call">Transfer, Send, and Call</a></li>
+        <li><a href="#constant">Constant</a></li>
+        <li><a href="#immutable">Immutable</a></li>
         <li><a href="#constructor">Constructor</a></li>
-        <li><a href="#modifiers">Modifiers</a></li>
-        <li><a href="#immutable--constant">Immutable & Constant</a></li>
-        <li><a href="#custom-errors">Custom Errors</a></li>
-        <li><a href="#testnet-demo">Testnet Demo</a></li>
+        <li><a href="#gửi-eth-thông-qua-một-function">Gửi ETH thông qua một function</a></li>
         <li><a href="#receive--fallback">Receive & Fallback</a></li>
+        <li><a href="#transfer-send-and-call">Transfer, Send, and Call</a></li>
+        <li><a href="#modifier">Modifier</a></li>
     </ol>
 </details>
 
+<details>
+    <summary><a href="#section-4-decentralized-crowdfunding-contract-with-chainlink-oracle">Section 4: Decentralized Crowdfunding Contract (with Chainlink Oracle)</a></summary>
+    <ol>
+        <li><a href="#lấy-dữ-liệu-giá-thực-tế-bằng-chainlink-oracle">Lấy dữ liệu giá thực tế bằng Chainlink Oracle</a></li>
+        <li><a href="#overflow--underflow">Overflow & Underflow</a></li>
+        <li><a href="#vòng-lặp">Vòng lặp</a></li>
+        <li><a href="#reset-array">Reset array</a></li>
+        <li><a href="#library">Library</a></li>
+        <li><a href="#events">Events</a></li>
+    </ol>
+</details>
 
 ## Section 1: Remix Simple Storage
 
@@ -118,11 +127,103 @@ Bởi vì Solidity liên tục cập nhật với các tính năng mới, cải 
 - Deploy một contract (smart contract có một địa chỉ address cũng giống như wallet của chúng ta).
 - `view` & `pure` functions.
 
-### Array & Struct
-- **Array**
-- **Struct**
-- Dynamic & fixed size arrays (mảng có độ dài linh hoạt và mảng có độ dài cố định)
-- `push` function
+### Array
+
+```js
+contract Array {
+    // Một số cách để khởi tạo một array
+    uint256[] public arr; // Array rỗng
+    uint256[] public arr2 = [1, 2, 3]; 
+    // Array fixed size, độ dài cố định, các phần tử mặc định giá trị 0
+    uint256[10] public myFixedSizeArr;
+
+    function get(uint256 i) public view returns (uint256) {
+        return arr[i];
+    }
+
+    // Solidity có thể return về hết một cả array bất kể độ dài
+    // Nên tránh returns theo kiểu này, vì array có thể rất lớn
+    function getArr() public view returns (uint256[] memory) {
+        return arr;
+    }
+
+    function push(uint256 i) public {
+        // Thêm vào array, độ dài của array sẽ tăng lên một
+        arr.push(i);
+    }
+
+    function pop() public {
+        // Xoá phần tử cuối cùng của array
+        // Độ dài của array sẽ giảm đi 1
+        arr.pop();
+    }
+
+    function getLength() public view returns (uint256) {
+        return arr.length;
+    }
+
+    function remove(uint256 index) public {
+        // Delete sẽ không xoá phần tử trong array tại vị trí index
+        // Nó sẽ đưa giá trị của phần tử về giá trị mặc định
+        // Ở đây giá trị mặc định của unit256 là 0
+        delete arr[index];
+    }
+
+    function examples() external {
+        // Tạo một biến array trong phân vùng memory để tính toán dữ liệu
+        // Sẽ bị xoá đi khi function hoàn tất
+        // Chỉ có thể khởi tạo kiểu này với fixed size array
+        uint256[] memory a = new uint256[](5);
+    }
+}
+```
+
+### Struct
+
+- Bạn có thể định nghĩa một kiểu cho riêng mình bằng keyword `struct`.
+- Nếu bạn muốn nhóm các dữ liệu có liên quan lại với nhau thì struct sinh ra để giúp bạn làm điều đó.
+- Có thể khai báo bên ngoài một `contract` và `import` vào contract khác.
+
+```js
+contract Todos {
+    struct Todo {
+        string text;
+        bool completed;
+    }
+
+    // Một array với kiểu `Todo`
+    Todo[] public todos;
+
+    function create(string calldata _text) public {
+        // 3 cách để khởi tạo một struct
+        // - gọi nó như một function
+        todos.push(Todo(_text, false));
+
+        // key value mapping
+        todos.push(Todo({text: _text, completed: false}));
+
+        // khởi tạo một struct rỗng và update đó
+        Todo memory todo;
+        todo.text = _text;
+        // todo.completed khởi tạo sẽ bằng giá trị mặc định của kiểu dữ liệu
+        // ở đây = false
+
+        todos.push(todo);
+    }
+
+    // update text
+    function updateText(uint256 _index, string calldata _text) public {
+        Todo storage todo = todos[_index];
+        todo.text = _text;
+    }
+
+    // update completed
+    function toggleCompleted(uint256 _index) public {
+        Todo storage todo = todos[_index];
+        todo.completed = !todo.completed;
+    }
+}
+```
 
 ### Memory, Storage & Calldata
 
@@ -249,24 +350,129 @@ Code: https://github.com/openedu101/solidity-basics/tree/03-decentralized-crowdf
 
 Phần này chúng ta sẽ xây dựng một smart contract để gây quỹ từ cộng đồng theo cách phi tập trung.
 
-### Gửi ETH thông qua một function
-- [Ethereum Unit Converter](https://etherscan.io/unitconverter)
+Có một số thay đổi trong phần này, code trên là code demo, mình đã dùng rồi nên mình sẽ để im như vậy nha. Finish code mọi người có thể xem trong section 4.
 
-- Các trường trong một transaction trên Ethereum: 
-  - `from`
-  - `to`
-  - `gasLimit`
-  - `maxFeePerGas`
-  - `maxPriorityFeePerGas`
-  - `nonce`
-  - `value`
+### Payable
 
-Chi tiết: https://ethereum.org/en/developers/docs/transactions/
-  
-- [v, r, s trong eth_getTransactionByHash nghĩa là gì?](https://ethereum.stackexchange.com/questions/15766/what-does-v-r-s-in-eth-gettransactionbyhash-mean)
-- Payable: `function` và `address` được khai báo `payable` có thể nhận ether vào hợp đồng.
-- Solidty Global Keywords: https://docs.soliditylang.org/en/latest/cheatsheet.html#global-variables
-  
+```js
+    // Khai báo rằng địa chỉ address được lưu trữ 
+    // có thể gửi Ether thông qua các hàm send hoặc call
+    address payable public owner;
+
+    // Payable constructor có thể nhận Ether
+    constructor() payable {
+        owner = payable(msg.sender);
+    }
+
+    // Function dùng để nhận Ether vào trong contract.
+    // Gọi function này với Ether được gửi kèm thông qua msg.value
+    // Số dư Ether của contract này sẽ tự động được cập nhật
+    function deposit() public payable {}
+
+    // Cũng gọi function này với Ether được gửi kèm thông qua msg.value
+    // Nhưng sẽ không gọi được, 
+    // function sẽ bị revert bởi vì đây không phải một payable function
+    function notPayable() public {}
+
+    // Function dùng để rút Ether từ contract này ra ngoài
+    function withdraw() public {
+        // lấy số dư Ether của contract này
+        uint256 amount = address(this).balance;
+
+        // gửi hết Ether tới cho biến owner
+        (bool success,) = owner.call{value: amount}("");
+        require(success, "Failed to send Ether");
+    }
+
+    // Function này sẽ gửi Ether của contract 
+    // đến cho một địa chỉ address 
+    // thông quan input/arguments address và số lượng muốn gửi được truyền vào
+    function transfer(address payable _to, uint256 _amount) public {
+        // biến _to được truyền vào cần phải khai báo như một biến payable
+        (bool success,) = _to.call{value: _amount}("");
+        require(success, "Failed to send Ether");
+    }
+```
+
+### Ether & Wei
+
+Giống như việc một $1 = 100 cent. Một `ether` bằng với 10<sup>18</sup> `wei`.
+
+```js
+    uint256 public oneWei = 1 wei;
+    // 1 wei bằng với 1
+    bool public isOneWei = (oneWei == 1);
+
+    uint256 public oneGwei = 1 gwei;
+    // 1 gwei bằng với 10^9 wei
+    bool public isOneGwei = (oneGwei == 1e9);
+
+    uint256 public oneEther = 1 ether;
+    // 1 ether bằng với 10^18 wei
+    bool public isOneEther = (oneEther == 1e18);
+```
+
+### Validations (Xác thực)
+
+Có 3 functions kiểm tra, xác thực để chúng ta làm việc. Tuỳ theo điều kiện đúng hoặc sai bạn thiết lập thì khi nó được trigger (kích hoạt), thì function sẽ bị revert - dừng mọi hoạt động của function và trạng thái trước khi function này được chạy sẽ được dữ nguyên.
+
+- `require` để xác thực dữ liệu và điều kiện đầu vào.
+
+
+```js
+    function testRequire(uint256 _i) public pure {
+        // Require nên được dùng để xác thực các điều kiện:
+        // - inputs (dữ liệu nhập vào function)
+        // - điều kiện trước khi thực thi
+        // - giá trị  nhận về khi call một function
+        require(_i > 10, "Input must be greater than 10");
+    }
+```
+
+- `revert` cũng sẽ tương tự như require nhưng sử dụng điều kiện bằng những expressions (biểu thức) ví dụ như `if` `else` để kích hoạt. 
+    - [Expressions and Control Structures](https://docs.soliditylang.org/en/v0.8.26/control-structures.html)
+
+```js
+    function testRevert(uint256 _i) public pure {
+        // Revert hữu dụng trong trường hợp kiểm tra các điều kiện phức tạp
+        // This code này giống hệt kiểm tra require bên trên
+        if (_i <= 10) {
+            revert("Input must be greater than 10");
+        }
+    }
+```
+
+```js
+    // custom error
+    error InsufficientBalance(uint256 balance, uint256 withdrawAmount);
+
+    function testCustomError(uint256 _withdrawAmount) public view {
+        uint256 bal = address(this).balance;
+        if (bal < _withdrawAmount) {
+            revert InsufficientBalance({
+                balance: bal,
+                withdrawAmount: _withdrawAmount
+            });
+        }
+    }
+```
+Sử dụng custom error thì sẽ tiết kiệm gas hơn.
+
+- `assert` (ít dùng) để kiểm tra mã không bao giờ được sai. Nếu sai điều kiện bên trong thì sẽ revert.
+
+
+```js
+    uint256 public num;
+
+    function testAssert() public view {
+        // Assert chỉ nên dùng để kiểm tra các lỗi bên trong contract,
+        // hoặc kiểm tra tính bất biến
+
+        // Ở bên dưới chúng ta kiểm tra rằng biến num luôn bằng 0
+        assert(num == 0);
+    }
+``` 
+
 ### Require & Revert
 - **Require**
     
@@ -318,6 +524,187 @@ if (condition) {
 
 Mặc dù `revert()` cho phép xử lý logic phức tạp, nhưng việc có quá nhiều logic phức tạp trong smart contract được coi là một dấu hiệu của code không tối ưu (code smell).
 
+### Constant
+
+Một biết được đặt là `constant` sẽ không thể được cập nhật. Sử dụng constant giúp tiết kiệm gas.
+
+```js
+    // hãy viết hoa những biến constant
+    address public constant MY_ADDRESS = 0x7f4A3Fe909524CEa8C91fFdEf717C797581AE36D;
+    uint256 public constant MY_UINT = 123;
+```
+
+### Immutable
+Biến được xác định là `immutable` cũng sẽ giống như `constant`, không thể được cập nhật. Tuy nhiên có thể được xác định trong hàm khởi tạo `constuctor()` và sẽ không được thay đổi sau đó.
+
+```js
+    // hãy đặt một ký tự i_ trước tên biến để xác định đó là biến immutable
+    address public immutable i_myAddress;
+    uint256 public immutable i_myUint;
+
+    constructor(uint256 _myUint) {
+        i_myAddress = msg.sender;
+        i_myUint = _myUint;
+    }
+```
+
+### Constructor
+
+Hàm `constructor()` là một hàm tuỳ chọn, được khởi tạo khi tạo `contract`
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+// Base contract X
+contract X {
+    string public name;
+
+    constructor(string memory _name) {
+        name = _name;
+    }
+}
+
+// Base contract Y
+contract Y {
+    string public text;
+
+    constructor(string memory _text) {
+        text = _text;
+    }
+}
+
+// Base contract C
+contract C is X, Y {
+    
+    constructor(string memory _name, string memory _text) X(_name) Y(_text) {}
+}
+```
+
+### Gửi ETH thông qua một function
+- [Ethereum Unit Converter](https://etherscan.io/unitconverter)
+
+- Các trường trong một transaction trên Ethereum: 
+  - `from`
+  - `to`
+  - `gasLimit`
+  - `maxFeePerGas`
+  - `maxPriorityFeePerGas`
+  - `nonce`
+  - `value`
+
+Chi tiết: https://ethereum.org/en/developers/docs/transactions/
+  
+- [v, r, s trong eth_getTransactionByHash nghĩa là gì?](https://ethereum.stackexchange.com/questions/15766/what-does-v-r-s-in-eth-gettransactionbyhash-mean)
+- Payable: `function` và `address` được khai báo `payable` có thể nhận ether vào hợp đồng.
+- Solidty Global Keywords: https://docs.soliditylang.org/en/latest/cheatsheet.html#global-variables
+
+### Receive & Fallback
+
+`contract` nếu muốn nhận Ether phải có ít nhất một trong các `function` dưới đây:
+
+- `receive()` external payable
+- `fallback()` external payable
+  
+`receive()` sẽ được gọi nếu `msg.data` bị bỏ trống, còn không `fallback()` sẽ được gọi.
+
+```js
+contract ReceiveEther {
+    /*
+    Function nào sẽ được gọi, fallback() or receive()?
+
+           gửi Ether
+               |
+         msg.data có trống không?
+              /      \
+            có      không
+            /          \
+receive() có tồn tại?  fallback()
+         /   \
+        có   không
+        /      \
+    receive()   fallback()
+    */
+
+    receive() external payable {}
+    
+    fallback() external payable {}
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+}
+```
+
+- `this` là để chỉ contract này.
+
+### Transfer, Send, and Call
+
+Bạn có thể gửi Ether đến các hợp đồng khác bằng 3 functions:
+
+- `transfer` (2300 gas, không ném về lỗi)
+- `send` (2300 gas, trả về `bool`)
+- `call` (có thể set gas hoặc không, trả về `bool`)
+
+```js
+contract SendEther {
+    function sendViaTransfer(address payable _to) public payable {
+        // Không nên dùng function này
+        _to.transfer(msg.value);
+    }
+
+    function sendViaSend(address payable _to) public payable {
+        // Function này cũng không nên dùng
+        bool sent = _to.send(msg.value);
+        require(sent, "Failed to send Ether");
+    }
+
+    function sendViaCall(address payable _to) public payable {
+        // Function này nên được dùng
+        (bool sent, bytes memory data) = _to.call{value: msg.value}("");
+        require(sent, "Failed to send Ether");
+    }
+}
+```
+
+### Modifier
+
+- Solidity Operators with Example: https://www.geeksforgeeks.org/solidity-operators/
+- `modifier` là function có thể được gọi trước hoặc sau `function` được gọi.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
+
+contract FunctionModifier {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    function changeOwner(address _newOwner)
+        public
+        onlyOwner
+    {
+        owner = _newOwner;
+    }
+}
+```
+
+## Section 4: Decentralized Crowdfunding Contract (with Chainlink Oracle)
+
+Code: https://github.com/openedu101/solidity-basics/tree/04-decentralized-crowdfunding-final-code
+
+Trong phần này, video mình có quên nói về Solidity Math (những hàm toán học trong Solidity), bạn có thể tìm hiểu thêm bên dưới.
+
+Ngoài ra còn có những vấn đề khác như Overflow và Underflow. Tuy nhiên từ Solidity phiên bản 0.8 trở lên đã khắc phục vấn đề này. Để tìm hiểu sâu hơn mình sẽ giải thích trong khoá Advanced nhé.
+
 ### Lấy dữ liệu giá thực tế bằng Chainlink Oracle
 
 - Chainlink Documentation: https://docs.chain.link/
@@ -326,40 +713,6 @@ Mặc dù `revert()` cho phép xử lý logic phức tạp, nhưng việc có qu
 - **Solidity Math**:
   - Nhân trước khi chia
   - Không có dấu phẩy động trong Solidity.
-
-### Library
-
-`library` tương tự như `contract`, nhưng bạn không thể khai báo bất kỳ biến trạng thái nào và không thể gửi ether.
-
-`library` có thể `import` vào `contract` nếu tất cả các chức năng thư viện đều là nội bộ. Nếu không, `library` phải được deploy và liên kết trước khi `contract` được `deploy`.
-
-```js
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
-
-library Math {
-    function sqrt(uint256 y) internal pure returns (uint256 z) {
-        if (y > 3) {
-            z = y;
-            uint256 x = y / 2 + 1;
-            while (x < z) {
-                z = x;
-                x = (y / x + x) / 2;
-            }
-        } else if (y != 0) {
-            z = 1;
-        }
-        // else z = 0 (default value)
-    }
-}
-
-contract TestMath {
-    function testSquareRoot(uint256 x) public pure returns (uint256) {
-        return Math.sqrt(x);
-    }
-}
-
-```
 
 ### Overflow & Underflow
 
@@ -425,150 +778,61 @@ contract DeleteExample {
 }
 ```
 
-### Transfer, Send, and Call
 
-Bạn có thể gửi Ether đến các hợp đồng khác bằng 3 functions:
+### Library
 
-- `transfer` (2300 gas, không ném về lỗi)
-- `send` (2300 gas, trả về `bool`)
-- `call` (có thể set gas hoặc không, trả về `bool`)
+`library` tương tự như `contract`, nhưng bạn không thể khai báo bất kỳ biến trạng thái nào và không thể gửi ether.
 
-```js
-contract SendEther {
-    function sendViaTransfer(address payable _to) public payable {
-        // Không nên dùng function này
-        _to.transfer(msg.value);
-    }
-
-    function sendViaSend(address payable _to) public payable {
-        // Function này cũng không nên dùng
-        bool sent = _to.send(msg.value);
-        require(sent, "Failed to send Ether");
-    }
-
-    function sendViaCall(address payable _to) public payable {
-        // Function này nên được dùng
-        (bool sent, bytes memory data) = _to.call{value: msg.value}("");
-        require(sent, "Failed to send Ether");
-    }
-}
-```
-
-### Constructor
-
-Hàm `constructor()` là một hàm tuỳ chọn, được khởi tạo khi tạo `contract`
+`library` có thể `import` vào `contract` nếu tất cả các chức năng thư viện đều là nội bộ. Nếu không, `library` phải được deploy và liên kết trước khi `contract` được `deploy`.
 
 ```js
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-// Base contract X
-contract X {
-    string public name;
-
-    constructor(string memory _name) {
-        name = _name;
+library Math {
+    function sqrt(uint256 y) internal pure returns (uint256 z) {
+        if (y > 3) {
+            z = y;
+            uint256 x = y / 2 + 1;
+            while (x < z) {
+                z = x;
+                x = (y / x + x) / 2;
+            }
+        } else if (y != 0) {
+            z = 1;
+        }
+        // else z = 0 (default value)
     }
 }
 
-// Base contract Y
-contract Y {
-    string public text;
-
-    constructor(string memory _text) {
-        text = _text;
+contract TestMath {
+    function testSquareRoot(uint256 x) public pure returns (uint256) {
+        return Math.sqrt(x);
     }
 }
 
-// Base contract C
-contract C is X, Y {
-    
-    constructor(string memory _name, string memory _text) X(_name) Y(_text) {}
-}
 ```
 
-### Modifiers
+### Events
 
-- Solidity Operators with Example: https://www.geeksforgeeks.org/solidity-operators/
-- `modifier` là function có thể được gọi trước hoặc sau `function` được gọi.
+`event` cho phép ghi nhật ký (log) vào blockchain. Event có thể dùng để cho một số trường hợp:
+
+- Lắng nghe event để cập nhật trạng thái của giao dịch hoặc hợp đồng trên giao diện người dùng.
+- Sử dụng nhưng một hình thức lưu trữ dữ liệu giá rẻ, lấy ra nhanh chóng.
 
 ```js
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
+    // Một event có thể có tối đa 3 biến được đặt là `indexed`
+    // `indexed` được coi như là lập chỉ mục, giúp lọc các bản ghi nhanh hơn
+    event Log(address indexed sender, string message);
+    event AnotherLog();
 
-contract FunctionModifier {
-    address public owner;
-
-    constructor() {
-        owner = msg.sender;
+    function test() public {
+        emit Log(msg.sender, "Hello World!");
+        emit Log(msg.sender, "Hello EVM!");
+        emit AnotherLog();
     }
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not owner");
-        _;
-    }
-
-    function changeOwner(address _newOwner)
-        public
-        onlyOwner
-    {
-        owner = _newOwner;
-    }
-}
 ```
 
-### Immutable & Constant
-
-- `immutable` nên đùng để ghi dữ liệu vào trong lần khởi tạo contract.
-- `constant` nên dùng để ghi dữ liệu trực tiếp vào trong code.
-
-Dùng `immutable` và `constant` để tối ưu gas cho contract.
-
-### Custom Errors
-
-- [Custom Errors in Solidity](https://soliditylang.org/blog/2021/04/21/custom-errors/)
-
-### Testnet Demo
-
-### Receive & Fallback
-
-`contract` nếu muốn nhận Ether phải có ít nhất một trong các `function` dưới đây:
-
-- `receive()` external payable
-- `fallback()` external payable
-  
-`receive()` sẽ được gọi nếu `msg.data` bị bỏ trống, còn không `fallback()` sẽ được gọi.
-
-```js
-contract ReceiveEther {
-    /*
-    Function nào sẽ được gọi, fallback() or receive()?
-
-           gửi Ether
-               |
-         msg.data có trống không?
-              /      \
-            có      không
-            /          \
-receive() có tồn tại?  fallback()
-         /   \
-        có   không
-        /      \
-    receive()   fallback()
-    */
-
-    receive() external payable {}
-    
-    fallback() external payable {}
-
-    function getBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
-}
-```
-
-- `this` là để chỉ contract này.
-  
 ---
 > #### "Chặng đường dài hàng nghìn dặm bắt đầu từ một bước chân nhỏ." - Lão Tử
 
